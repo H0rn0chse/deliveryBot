@@ -1,0 +1,25 @@
+{
+	"name": "delivery-bot",
+	"version": "1.0.0",
+	"description": "delivery bot",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/H0rn0chse/deliveryBot.git"
+	},
+	"author": {
+		"name": "H0rn0chse",
+		"email": "h0rn0chse@gmx.de"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"cheerio": "^1.0.0-rc.3",
+		"dateformat": "^3.0.3",
+		"discord.js": "^12.2.0",
+		"dotenv": "^8.2.0",
+		"got": "^11.3.0"
+	}
+}
