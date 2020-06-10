@@ -4,7 +4,7 @@ const got = require('got')
 const cheerio = require('cheerio')
 const dateFormat = require('dateformat')
 const Discord = require('discord.js')
-const client = new Discord.Client()
+global.client = new Discord.Client()
 
 const commands = require("./scripts/commands")
 const discordHelper = require("./scripts/discordHelper")
@@ -13,13 +13,13 @@ global.userList = {}
 global.messages = []
 global.timeout = 10 * 60
 
-client.login(process.env.CLIENT_TOKEN)
+global.client.login(process.env.CLIENT_TOKEN)
 
-client.once('ready', () => {
+global.client.once('ready', () => {
 	console.log("ready")
 
 	// message handling
-	client.on('message', message => {
+	global.client.on('message', message => {
 		const channel = message.channel
 
 		// ignore dms
@@ -51,27 +51,43 @@ client.once('ready', () => {
 })
 
 function doWork () {
-	Object.values(global.userList).forEach(user => {
+	Object.values(global.userList).forEach(entry => {
 
-		got(user.url)
+		got(entry.url)
 			.then(response => {
 				const $ = cheerio.load(response.body)
 
-				if (selectorMatches($, user)) {
-					discordHelper.send(user.channel, `<@${user.userId}> Paket kommt an`)
+				if (selectorMatches($, entry)) {
+					discordHelper.send(entry.channel, `<@${entry.user.id}> Paket kommt an`)
 				}
 			}).catch(error => {
 				console.log(error)
-				delete global.userList[user.userId]
+
+				if (error instanceof TypeError) {
+					discordHelper.dm(entry.user, "Your lookup was removed, due to a malformed url")
+						.then(() =>{
+							delete global.userList[entry.user.id]
+						})
+				} else if (error instanceof got.HTTPError) {
+					discordHelper.dm(entry.user, "Your lookup was removed, due to network issues")
+						.then(() =>{
+							delete global.userList[entry.user.id]
+						})
+				} else {
+					discordHelper.dm(entry.user, `Your lookup was removed, due to a unknown error: ${error.name}`)
+						.then(() =>{
+							delete global.userList[entry.user.id]
+						})
+				}
 			})
 	})
 }
 
-function selectorMatches ($, user) {
+function selectorMatches ($, entry) {
 	const count = $("tr.success").length
-	user.result = {
+	entry.result = {
 		timestamp: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss"),
-		output: `${count}/${user.targetCount}`
+		output: `${count}/${entry.targetCount}`
 	}
-	return count === user.targetCount
+	return count === entry.targetCount
 }

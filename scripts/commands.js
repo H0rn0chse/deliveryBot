@@ -15,8 +15,7 @@ module.exports = {
 				url: args[2],
 				targetCount: parseInt(args[3], 10),
 				channel: channel,
-				userId: userId,
-				userName: message.author.username,
+				user: message.author,
 				result: {
 					output: "",
 					timestamp: ""
@@ -92,8 +91,8 @@ module.exports = {
 		if (Object.keys(global.userList).length > 0) {
 			let msg = `timeout: ${global.timeout / 60} mins \nrunning a lookup for:`
 
-			Object.values(global.userList).forEach(function (user) {
-				msg += `\n• ${user.userName}`
+			Object.values(global.userList).forEach(function (entry) {
+				msg += `\n• ${entry.user.username}`
 			})
 
 			discordHelper.send(channel, msg, 10)

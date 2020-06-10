@@ -10,9 +10,15 @@ module.exports = {
 						.catch(() => {
 							// message could not be deleted
 						})
-				} else {
+				} else if (timeout !== false) {
 					global.messages.push(message)
 				}
+			})
+	},
+	dm: function (user, msg) {
+		return user.createDM()
+			.then(channel => {
+				return this.send(channel, msg, false)
 			})
 	},
 	argError: "You entered the wrong amount of items or the wrong format"
