@@ -11,7 +11,7 @@ const discordHelper = require("./scripts/discordHelper")
 
 global.userList = {}
 global.messages = []
-const timeout = 60
+const timeout = 10 * 60
 
 client.login(process.env.CLIENT_TOKEN)
 
