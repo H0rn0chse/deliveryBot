@@ -14,6 +14,9 @@ All commands start with the prefix deliveryBot:
 ### start \<url\> \<count\>
 Adds a lookup for your specific user to the routine.
 
+### startFor \<mention\> \<url\> \<count\>
+Adds a lookup for the mentioned user to the routine.
+
 ### stop
 Removes your lookup from the routine.
 

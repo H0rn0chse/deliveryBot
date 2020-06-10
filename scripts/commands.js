@@ -1,5 +1,7 @@
 const discordHelper = require("./discordHelper")
 
+let latestUser = {}
+
 module.exports = {
 	start: function (message) {
 		const userId = message.author.id
@@ -20,13 +22,33 @@ module.exports = {
 					timestamp: ""
 				}
 			}
-			if (!isNaN(user.targetCount)) {
-				global.userList[userId] = user
 
+			latestUser = JSON.parse(JSON.stringify(user));
+
+			if (args.length === 4 && !isNaN(user.targetCount)) {
+				global.userList[userId] = user
 				discordHelper.send(channel, "started processing your lookup", 5)
+			} else {
+				discordHelper.send(channel, discordHelper.argError, 5)
 			}
 		} else {
 			discordHelper.send(channel, "you can only have one lookup, please delete your existing one with: \"deliveryBot stop\"", 5)
+		}
+	},
+	startFor: function (message) {
+		const channel = message.channel
+		let args = message.content.split(" ")
+
+		if (args.length === 5 && message.mentions.users.size === 1) {
+
+			message.author = message.mentions.users.first()
+
+			args.splice(2,1)
+			message.content = args.join(" ")
+
+			this.start(message)
+		} else {
+			discordHelper.send(channel, discordHelper.argError, 5)
 		}
 	},
 	stop: function (message) {
@@ -77,6 +99,18 @@ module.exports = {
 			discordHelper.send(channel, msg, 10)
 		} else {
 			discordHelper.send(channel, "There are currently no lookups running", 5)	
+		}
+	}, log: function (message) {
+		let args = message.content.split(" ")
+		switch (args[2]) {
+			case "userList":
+				console.log(global.userList)
+				break
+			case "latestUser":
+				console.log(latestUser)
+				break
+			default:
+				console.log("object not included in command")
 		}
 	}
 }

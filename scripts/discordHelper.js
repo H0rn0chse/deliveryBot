@@ -14,5 +14,6 @@ module.exports = {
 					global.messages.push(message)
 				}
 			})
-	}
+	},
+	argError: "You entered the wrong amount of items or the wrong format"
 }
