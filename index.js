@@ -22,6 +22,11 @@ client.once('ready', () => {
 	client.on('message', message => {
 		const channel = message.channel
 
+		// ignore dms
+		if (message.guild !== null) {
+			return;
+		}
+
 		if (message.content.startsWith("deliveryBot")) {
 			let args = message.content.split(" ")
 
