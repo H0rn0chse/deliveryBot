@@ -11,7 +11,7 @@ const discordHelper = require("./scripts/discordHelper")
 
 global.userList = {}
 global.messages = []
-const timeout = 10 * 60
+global.timeout = 10 * 60
 
 client.login(process.env.CLIENT_TOKEN)
 
@@ -23,7 +23,7 @@ client.once('ready', () => {
 		const channel = message.channel
 
 		// ignore dms
-		if (message.guild !== null) {
+		if (!message.guild) {
 			return;
 		}
 
@@ -37,11 +37,17 @@ client.once('ready', () => {
 			}
 
 			message.delete({timeout: 1000})
+				.then(() => {
+					// message was deleted
+				})
+				.catch(() => {
+					// message could not be deleted
+				})
 		}
 	})
 
 	// working loop
-	setInterval(doWork, timeout * 1000)
+	setInterval(doWork, global.timeout * 1000)
 })
 
 function doWork () {

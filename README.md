@@ -22,3 +22,6 @@ Removes all messages posted by the bot. This command only works for messages pos
 
 ### status
 Returns the latest status of your specific lookup.
+
+### lookupStatus
+Returns all lookups that are currently running.

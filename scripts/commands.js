@@ -14,6 +14,7 @@ module.exports = {
 				targetCount: parseInt(args[3], 10),
 				channel: channel,
 				userId: userId,
+				userName: message.author.username,
 				result: {
 					output: "",
 					timestamp: ""
@@ -61,6 +62,21 @@ module.exports = {
 			
 		} else {
 			discordHelper.send(channel, "you dont have any running lookups", 5)
+		}
+	},
+	lookupStatus: function (message) {
+		const channel = message.channel
+
+		if (Object.keys(global.userList).length > 0) {
+			let msg = `timeout: ${global.timeout / 60} mins \nrunning a lookup for:`
+
+			Object.values(global.userList).forEach(function (user) {
+				msg += `\n• ${user.userName}`
+			})
+
+			discordHelper.send(channel, msg, 10)
+		} else {
+			discordHelper.send(channel, "There are currently no lookups running", 5)	
 		}
 	}
 }
