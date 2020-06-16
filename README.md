@@ -5,7 +5,7 @@ This discord bot fetches a website for you and checks whether a selector meets y
 ## Hardcoded details
 
 + selector: tr.success
-+ timeout: 60 seconds
++ timeout: 10 minutes
 
 ## Commands
 
