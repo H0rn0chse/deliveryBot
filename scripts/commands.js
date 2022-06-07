@@ -14,6 +14,7 @@ module.exports = {
 			const user = {
 				url: args[2],
 				targetCount: parseInt(args[3], 10),
+				selector: args[4],
 				channel: channel,
 				user: message.author,
 				result: {
@@ -24,7 +25,7 @@ module.exports = {
 
 			latestUser = JSON.parse(JSON.stringify(user));
 
-			if (args.length === 4 && !isNaN(user.targetCount)) {
+			if ((args.length === 4 || args.length === 5) && !isNaN(user.targetCount)) {
 				global.userList[userId] = user
 				discordHelper.send(channel, "started processing your lookup", 5)
 			} else {
@@ -62,7 +63,7 @@ module.exports = {
 		} else {
 			discordHelper.send(channel, "you dont have any running lookups", 5)
 		}
-		
+
 	},
 	clear: function () {
 		handledMessages = global.messages;
@@ -80,7 +81,7 @@ module.exports = {
 			const result = global.userList[userId].result;
 
 			discordHelper.send(channel, `The result of the latest fetch (${result.timestamp}): ${result.output}`, 8)
-			
+
 		} else {
 			discordHelper.send(channel, "you dont have any running lookups", 5)
 		}
@@ -97,7 +98,7 @@ module.exports = {
 
 			discordHelper.send(channel, msg, 10)
 		} else {
-			discordHelper.send(channel, "There are currently no lookups running", 5)	
+			discordHelper.send(channel, "There are currently no lookups running", 5)
 		}
 	}, log: function (message) {
 		let args = message.content.split(" ")

@@ -84,7 +84,8 @@ function doWork () {
 }
 
 function selectorMatches ($, entry) {
-	const count = $("tr.success").length
+	const selector = entry.selector || ".status.text-primary";
+	const count = $(selector).length
 	entry.result = {
 		timestamp: dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss"),
 		output: `${count}/${entry.targetCount}`
